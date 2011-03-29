@@ -1,3 +1,5 @@
+require 'sinatra'
+
 module Png
   module Gradient
     class Generator < Sinatra::Base  
