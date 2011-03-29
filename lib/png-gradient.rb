@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'RMagick'
 
 module Png
   module Gradient
@@ -10,7 +11,7 @@ module Png
         image = Magick::Image.read("gradient:#{@start_color}-#{@stop_color}") { self.size = dimensions }.first
 
         apply_opacity(image, @opacity)
-        cache_image(image, request.path)
+        #cache_image(image, request.path)
 
         content_type 'image/png', :charset => 'utf-8'
         image.format = 'PNG'
@@ -34,7 +35,7 @@ module Png
         image = gradients.append(true)
 
         apply_opacity(image, @opacity)
-        cache_image(image, request.path)
+        #cache_image(image, request.path)
 
         content_type 'image/png', :charset => 'utf-8'
         image.format = 'PNG'
@@ -46,7 +47,7 @@ module Png
         @stop_color ||= @start_color
         @dimensions = params[:dimensions]
         @opacity = 1 - (params[:opacity].to_f / 100)
-        @width, @height = @dimensions.split('x').map(&:to_i)
+        @width, @height = @dimensions.split('x').map { |d| d.to_i }
       end
 
       def apply_opacity(image, opacity)
